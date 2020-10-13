@@ -15,7 +15,6 @@ const colors = {
 	flying: '#F5F5F5',
 	fighting: '#E6E0D4',
 	normal: '#F5F5F5'
-
 };
 
 const main_type = Object.keys(colors);
@@ -40,7 +39,6 @@ const getPokemon = async id => {
 function createPokemonCard(pokemon){
     const pokemonEl = document.createElement('div');
     pokemonEl.classList.add('pokemon');
-    
     const poke_types = pokemon.types.map(el => el.type.name);
     const type = main_type.find(
         type => poke_types.indexOf(type)> -1
@@ -53,27 +51,44 @@ function createPokemonCard(pokemon){
     const color = colors[type];
 
     pokemonEl.style.backgroundColor = color;
-
-
     const pokeInnerHtml = `
     <div class="img-container">
         <img src="https://pokeres.bastionbot.org/images/pokemon/${pokemon.id}.png" alt="Sorry!"/>
-    </div>
-    <div class = "info">
+    </div>`
+    const info = `<div class = "info">
         <span class="number">#${pokemon.id.toString().padStart(3,'0')}
         </span>
         <h3 class="name">${name}</h3>
         <small class="type">Type: <span>${type}</span></small>
     </div>
     `;
+	let abilities  = pokemon.abilities.length == 0 ?
+		`
+	<h3 class="name">No Abilities</h3>
+	`:
+		`
+	<h3 class ="name">Abilities</h3>
+	`;
+	pokemon.abilities.forEach((abi, ind)=>{
+//		console.log(abi.ability.name.split()
+		abilities += `<br/><small class="type">${ind + 1}${". "}
+		<span>${abi.ability.name.split('-').map(val => val.charAt(0).toUpperCase() + val.slice(1)).join(' ')}
+			</span></small>`
+	})
 
-    pokemonEl.innerHTML = pokeInnerHtml;
+    pokemonEl.innerHTML = pokeInnerHtml + info;
 
     poke_container.appendChild(pokemonEl);
 
+	pokemonEl.addEventListener('mouseenter', ()=>{
+		pokemonEl.style.filter = 'brightness(110%)';
+		pokemonEl.innerHTML = abilities;
+
+	})
+	pokemonEl.addEventListener('mouseleave', ()=>{
+		pokemonEl.style.filter = 'none';
+		pokemonEl.innerHTML = pokeInnerHtml + info;
+	})
+
 }
 fetchPokemons();
-
-
-
-

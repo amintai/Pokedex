@@ -37,6 +37,9 @@ h1{
     margin: 10px;
     padding:20px;
     text-align:center;
+    transition:0.2s;
+    cursor:pointer;
+    width:160px;
 }
 .pokemon:hover{
     transform: scale(1.1);
@@ -58,6 +61,7 @@ h1{
 
 .pokeomon .info {
     margin-top:20px;
+    z-index:1;
 }
 
 .pokemon .number {
